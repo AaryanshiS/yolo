@@ -56,14 +56,13 @@
 #     cv2.destroyAllWindows()
 
 
-
-
+import logging
+import time
 
 import cv2
 import torch
-import logging
+
 from ultralytics import YOLO
-import time
 
 # ----------------------------
 # CONFIG
@@ -80,7 +79,7 @@ model = YOLO("C:/Users/DELL/Desktop/ultralytics/best_yolov8s.pt").to(device)
 # ----------------------------
 # CAMERA SETUP
 # ----------------------------
-cap = cv2.VideoCapture(0)   # 0 = default laptop camera
+cap = cv2.VideoCapture(0)  # 0 = default laptop camera
 if not cap.isOpened():
     print("❌ Could not open camera")
     exit()
@@ -102,20 +101,14 @@ try:
         frame_resized = cv2.resize(frame, (640, 360))
 
         # Run YOLO inference
-        results = model.predict(
-            frame_resized,
-            imgsz=320,
-            device=device,
-            verbose=False
-        )
+        results = model.predict(frame_resized, imgsz=320, device=device, verbose=False)
 
         # Draw YOLO annotations
         annotated = results[0].plot()
 
         # Calculate FPS
         fps = 1 / (time.time() - start_time)
-        cv2.putText(annotated, f"FPS: {fps:.2f}", (20, 40),
-                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+        cv2.putText(annotated, f"FPS: {fps:.2f}", (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
         # Show in full screen
         cv2.namedWindow("YOLOv8 Detection", cv2.WND_PROP_FULLSCREEN)
@@ -123,7 +116,7 @@ try:
         cv2.imshow("YOLOv8 Detection", annotated)
 
         # Press 'q' to quit
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        if cv2.waitKey(1) & 0xFF == ord("q"):
             break
 
 except KeyboardInterrupt:
