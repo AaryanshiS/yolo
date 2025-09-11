@@ -1,16 +1,18 @@
 # detection_receiver.py
 
+import logging
+
 import cv2
-import zmq
 import numpy as np
 import torch
-import logging
+import zmq
+
 from ultralytics import YOLO
 
 # ----------------------------
 # CONFIG
 # ----------------------------
-ZMQ_ADDRESS = "tcp://*:5555"   # Receiver binds here
+ZMQ_ADDRESS = "tcp://*:5555"  # Receiver binds here
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"✅ Using device: {device}")
 
@@ -18,13 +20,15 @@ print(f"✅ Using device: {device}")
 logging.getLogger("ultralytics").setLevel(logging.CRITICAL)
 
 # Load your trained YOLO model
-model = YOLO("C:/Users/DELL/Desktop/ultralytics/Datasets/Suspicious Activity Detection.v1i.yolov8/best_download.pt").to(device)
+model = YOLO("C:/Users/DELL/Desktop/ultralytics/Datasets/Suspicious Activity Detection.v1i.yolov8/best_download.pt").to(
+    device
+)
 
 # ----------------------------
 # SETUP ZMQ
 # ----------------------------
 context = zmq.Context()
-socket = context.socket(zmq.PULL)   # <-- PULL to match Pi's PUSH
+socket = context.socket(zmq.PULL)  # <-- PULL to match Pi's PUSH
 socket.bind(ZMQ_ADDRESS)
 
 print("📡 Receiver started, waiting for frames...")
@@ -34,7 +38,7 @@ print("📡 Receiver started, waiting for frames...")
 # ----------------------------
 try:
     while True:
-        msg = socket.recv()   # Blocking receive
+        msg = socket.recv()  # Blocking receive
 
         # Decode JPEG bytes
         nparr = np.frombuffer(msg, np.uint8)
@@ -48,9 +52,9 @@ try:
         # Run YOLOv8 inference
         results = model.predict(
             frame_resized,
-            imgsz=320,       # lower input size = faster inference
+            imgsz=320,  # lower input size = faster inference
             device=device,
-            verbose=False
+            verbose=False,
         )
 
         # Draw YOLO annotations
@@ -62,7 +66,7 @@ try:
         cv2.imshow("YOLOv8 Detection", annotated)
 
         # Press 'q' to quit
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        if cv2.waitKey(1) & 0xFF == ord("q"):
             break
 
 except KeyboardInterrupt:
