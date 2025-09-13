@@ -75,7 +75,7 @@ print(f"✅ Using device: {device}")
 logging.getLogger("ultralytics").setLevel(logging.CRITICAL)
 
 # Load your trained YOLO model
-model = YOLO("C:/Users/DELL/Desktop/ultralytics/best_yolov8s.pt").to(device)
+model = YOLO("C:\Users\DELL\Desktop\ultralytics\Datasets\Suspicious Activity Detection.v1i.yolov8\best.pt").to(device)
 
 # ----------------------------
 # CAMERA SETUP
