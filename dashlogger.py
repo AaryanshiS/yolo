@@ -1,9 +1,10 @@
+import os
+
 import dash
-from dash import dcc, html, Input, Output
+import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-import pandas as pd
-import os
+from dash import Input, Output, dcc, html
 from sklearn.ensemble import IsolationForest
 from sklearn.preprocessing import StandardScaler
 
@@ -21,20 +22,20 @@ server = dashboard.server  # expose server for deployment
 # ----------------------------
 # Layout
 # ----------------------------
-dashboard.layout = html.Div([
-    html.H1("📊 KPI & Anomaly Dashboard"),
-    
-    html.H2("📊 KPI Graphs"),
-    html.Div(id='kpi-summary'),
-    dcc.Graph(id='throughput-graph'),
-    dcc.Graph(id='latency-graph'),
-    dcc.Graph(id='pdv-graph'),
+dashboard.layout = html.Div(
+    [
+        html.H1("📊 KPI & Anomaly Dashboard"),
+        html.H2("📊 KPI Graphs"),
+        html.Div(id="kpi-summary"),
+        dcc.Graph(id="throughput-graph"),
+        dcc.Graph(id="latency-graph"),
+        dcc.Graph(id="pdv-graph"),
+        html.H3("🔎 Select Anomaly"),
+        dcc.Dropdown(id="anomaly-selector", placeholder="Select an anomaly"),
+        dcc.Interval(id="interval-component", interval=5000, n_intervals=0),  # refresh every 5s
+    ]
+)
 
-    html.H3("🔎 Select Anomaly"),
-    dcc.Dropdown(id='anomaly-selector', placeholder="Select an anomaly"),
-
-    dcc.Interval(id='interval-component', interval=5000, n_intervals=0)  # refresh every 5s
-])
 
 # ----------------------------
 # Callback
@@ -46,10 +47,9 @@ dashboard.layout = html.Div([
         Output("latency-graph", "figure"),
         Output("pdv-graph", "figure"),
         Output("anomaly-selector", "options"),
-        Output("anomaly-selector", "value")
+        Output("anomaly-selector", "value"),
     ],
-    [Input("interval-component", "n_intervals"),
-     Input("anomaly-selector", "value")]
+    [Input("interval-component", "n_intervals"), Input("anomaly-selector", "value")],
 )
 def update_dashboard(n, selected_anomaly):
     empty_fig = go.Figure()
@@ -69,13 +69,9 @@ def update_dashboard(n, selected_anomaly):
     df["PDV"] = df["RTT"].rolling(5).std().fillna(0)
     df["Time_Window"] = df["Time"].astype(int)
 
-    agg = df.groupby("Time_Window").agg({
-        "Length": "sum",
-        "RTT": "mean",
-        "Jitter": "mean",
-        "Throughput": "mean",
-        "PDV": "mean"
-    })
+    agg = df.groupby("Time_Window").agg(
+        {"Length": "sum", "RTT": "mean", "Jitter": "mean", "Throughput": "mean", "PDV": "mean"}
+    )
 
     # --- Anomaly Detection ---
     features = ["RTT", "Jitter", "Throughput"]
@@ -86,33 +82,38 @@ def update_dashboard(n, selected_anomaly):
     anomalies = agg[agg["Anomaly"] == -1]
 
     # --- KPI Summary ---
-    summary = html.Table([
-        html.Tr([html.Th("Metric"), html.Th("Value")]),
-        html.Tr([html.Td("Latency (Avg)"), html.Td(f"{agg['RTT'].mean():.2f} ms")]),
-        html.Tr([html.Td("Jitter (Avg)"), html.Td(f"{agg['Jitter'].mean():.2f} ms")]),
-        html.Tr([html.Td("Throughput (Avg)"), html.Td(f"{agg['Throughput'].mean():.2f} Kbps")]),
-        html.Tr([html.Td("PDV (Avg)"), html.Td(f"{agg['PDV'].mean():.2f} ms")]),
-        html.Tr([html.Td("Anomalies Detected"), html.Td(f"{(agg['Anomaly'] == -1).sum()}")])
-    ])
+    summary = html.Table(
+        [
+            html.Tr([html.Th("Metric"), html.Th("Value")]),
+            html.Tr([html.Td("Latency (Avg)"), html.Td(f"{agg['RTT'].mean():.2f} ms")]),
+            html.Tr([html.Td("Jitter (Avg)"), html.Td(f"{agg['Jitter'].mean():.2f} ms")]),
+            html.Tr([html.Td("Throughput (Avg)"), html.Td(f"{agg['Throughput'].mean():.2f} Kbps")]),
+            html.Tr([html.Td("PDV (Avg)"), html.Td(f"{agg['PDV'].mean():.2f} ms")]),
+            html.Tr([html.Td("Anomalies Detected"), html.Td(f"{(agg['Anomaly'] == -1).sum()}")]),
+        ]
+    )
 
     # --- Graphs ---
     throughput_fig = px.line(agg, x=agg.index, y="Throughput", title="Throughput Over Time")
-    throughput_fig.add_scatter(x=anomalies.index, y=anomalies["Throughput"], mode="markers",
-                               marker=dict(color="red", size=10), name="Anomaly")
+    throughput_fig.add_scatter(
+        x=anomalies.index, y=anomalies["Throughput"], mode="markers", marker=dict(color="red", size=10), name="Anomaly"
+    )
 
     latency_fig = px.line(agg, x=agg.index, y="RTT", title="Latency Over Time")
-    latency_fig.add_scatter(x=anomalies.index, y=anomalies["RTT"], mode="markers",
-                            marker=dict(color="red", size=10), name="Anomaly")
+    latency_fig.add_scatter(
+        x=anomalies.index, y=anomalies["RTT"], mode="markers", marker=dict(color="red", size=10), name="Anomaly"
+    )
 
     pdv_fig = px.line(agg, x=agg.index, y="PDV", title="Packet Delay Variation (PDV)")
 
     # --- Anomaly Dropdown ---
     anomaly_indices = list(anomalies.index)
-    dropdown_options = [{'label': f'Anomaly at Time {idx}', 'value': idx} for idx in anomaly_indices]
+    dropdown_options = [{"label": f"Anomaly at Time {idx}", "value": idx} for idx in anomaly_indices]
     if not selected_anomaly and anomaly_indices:
         selected_anomaly = anomaly_indices[0]
 
     return summary, throughput_fig, latency_fig, pdv_fig, dropdown_options, selected_anomaly
+
 
 # ----------------------------
 # Run Dash App
