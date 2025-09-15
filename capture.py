@@ -1,8 +1,9 @@
-import pyshark
-import pandas as pd
-import time
 import os
 import subprocess
+import time
+
+import pandas as pd
+import pyshark
 
 OUTPUT_FILE = "live130925.csv"
 INTERFACE = "Wi-Fi"  # change to your interface
@@ -17,14 +18,17 @@ cap = pyshark.LiveCapture(interface=INTERFACE, display_filter="ip")
 
 packets = []
 
+
 # --- Auto-start dashboard after short delay ---
 def launch_dashboard():
     time.sleep(5)  # wait 5 seconds before starting dashboard
     print("📊 Launching dashboard...")
     subprocess.Popen(["python", "dashlogger.py"])  # run dashboard in parallel
 
+
 # Launch dashboard in background
 import threading
+
 threading.Thread(target=launch_dashboard, daemon=True).start()
 
 # --- Capture loop ---
@@ -37,15 +41,16 @@ for packet in cap.sniff_continuously():
         src = getattr(packet.ip, "src", "N/A")
         dst = getattr(packet.ip, "dst", "N/A")
 
-
         # Append row
-        packets.append({
-            "Time": timestamp,
-            "Source": src,
-            "Destination": dst,
-            "Protocol": protocol,
-            "Length": length,
-         })
+        packets.append(
+            {
+                "Time": timestamp,
+                "Source": src,
+                "Destination": dst,
+                "Protocol": protocol,
+                "Length": length,
+            }
+        )
 
         # Write every 20 packets
         if len(packets) >= 20:
