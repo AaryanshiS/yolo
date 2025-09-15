@@ -241,7 +241,7 @@ plotly @ file:///C:/ci_311/plotly_1676443558683/work
 pluggy @ file:///C:/ci_311/pluggy_1676422178143/work
 ply==3.11
 polars==1.33.0
-portalocker==2.8.2
+portalocker==3.2.0
 poyo @ file:///tmp/build/80754af9/poyo_1617751526755/work
 prometheus-client @ file:///C:/ci_311/prometheus_client_1679591942558/work
 prompt-toolkit @ file:///C:/ci_311/prompt-toolkit_1676425940920/work
