@@ -351,7 +351,7 @@ statsmodels @ file:///C:/b/abs_7bth810rna/croot/statsmodels_1689937298619/work
 sympy==1.14.0
 tables @ file:///C:/b/abs_0626auep9v/croot/pytables_1691623892917/work
 tabulate @ file:///C:/ci_311/tabulate_1676494503192/work
-TBB==0.2
+TBB==2022.2.0
 tblib @ file:///Users/ktietz/demo/mc3/conda-bld/tblib_1629402031467/work
 tenacity @ file:///C:/b/abs_ddkoa9nju6/croot/tenacity_1682972298929/work
 termcolor==3.1.0
