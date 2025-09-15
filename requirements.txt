@@ -285,7 +285,7 @@ python-dateutil @ file:///tmp/build/80754af9/python-dateutil_1626374649649/work
 python-dotenv @ file:///C:/ci_311/python-dotenv_1676455170580/work
 python-json-logger @ file:///C:/b/abs_cblnsm6puj/croot/python-json-logger_1683824130469/work
 python-lsp-black @ file:///C:/ci_311/python-lsp-black_1678721855627/work
-python-lsp-jsonrpc==1.0.0
+python-lsp-jsonrpc==1.1.2
 python-lsp-server @ file:///C:/b/abs_catecj7fv1/croot/python-lsp-server_1681930405912/work
 python-slugify @ file:///tmp/build/80754af9/python-slugify_1620405669636/work
 python-snappy @ file:///C:/ci_311/python-snappy_1676446060182/work
