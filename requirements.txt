@@ -229,7 +229,7 @@ parso @ file:///opt/conda/conda-bld/parso_1641458642106/work
 partd @ file:///C:/b/abs_4e2m_ds81n/croot/partd_1693937921136/work
 pathlib @ file:///Users/ktietz/demo/mc3/conda-bld/pathlib_1629713961906/work
 pathspec @ file:///C:/ci_311/pathspec_1679427644142/work
-patsy==0.5.3
+patsy==1.0.1
 pep8==1.7.1
 pexpect @ file:///tmp/build/80754af9/pexpect_1605563209008/work
 pickleshare @ file:///tmp/build/80754af9/pickleshare_1606932040724/work
