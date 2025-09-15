@@ -26,7 +26,7 @@ attrs @ file:///C:/ci_311/attrs_1676422272484/work
 Automat @ file:///tmp/build/80754af9/automat_1600298431173/work
 autopep8 @ file:///opt/conda/conda-bld/autopep8_1650463822033/work
 azure-common==1.1.28
-azure-core==1.30.0
+azure-core==1.35.1
 azure-identity==1.15.0
 azure-mgmt-compute==30.5.0
 azure-mgmt-core==1.4.0
