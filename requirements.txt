@@ -17,7 +17,7 @@ appdirs==1.4.4
 argon2-cffi @ file:///opt/conda/conda-bld/argon2-cffi_1645000214183/work
 argon2-cffi-bindings @ file:///C:/ci_311/argon2-cffi-bindings_1676424443321/work
 arrow @ file:///C:/ci_311/arrow_1678249767083/work
-astroid @ file:///C:/ci_311/astroid_1678740610167/work
+asteroid @ file:///C:/ci_311/astroid_1678740610167/work
 astropy @ file:///C:/ci_311_rebuilds/astropy_1678996071858/work
 asttokens @ file:///opt/conda/conda-bld/asttokens_1646925590279/work
 async-timeout @ file:///C:/ci_311/async-timeout_1676431518331/work
@@ -229,7 +229,7 @@ parso @ file:///opt/conda/conda-bld/parso_1641458642106/work
 partd @ file:///C:/b/abs_4e2m_ds81n/croot/partd_1693937921136/work
 pathlib @ file:///Users/ktietz/demo/mc3/conda-bld/pathlib_1629713961906/work
 pathspec @ file:///C:/ci_311/pathspec_1679427644142/work
-patsy==0.5.3
+patsy==1.0.1
 pep8==1.7.1
 pexpect @ file:///tmp/build/80754af9/pexpect_1605563209008/work
 pickleshare @ file:///tmp/build/80754af9/pickleshare_1606932040724/work
