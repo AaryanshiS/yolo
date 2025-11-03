@@ -17,7 +17,7 @@ appdirs==1.4.4
 argon2-cffi @ file:///opt/conda/conda-bld/argon2-cffi_1645000214183/work
 argon2-cffi-bindings @ file:///C:/ci_311/argon2-cffi-bindings_1676424443321/work
 arrow @ file:///C:/ci_311/arrow_1678249767083/work
-astroid @ file:///C:/ci_311/astroid_1678740610167/work
+asteroid @ file:///C:/ci_311/astroid_1678740610167/work
 astropy @ file:///C:/ci_311_rebuilds/astropy_1678996071858/work
 asttokens @ file:///opt/conda/conda-bld/asttokens_1646925590279/work
 async-timeout @ file:///C:/ci_311/async-timeout_1676431518331/work
@@ -27,7 +27,7 @@ Automat @ file:///tmp/build/80754af9/automat_1600298431173/work
 autopep8 @ file:///opt/conda/conda-bld/autopep8_1650463822033/work
 azure-common==1.1.28
 azure-core==1.30.0
-azure-identity==1.15.0
+azure-identity==1.25.0
 azure-mgmt-compute==30.5.0
 azure-mgmt-core==1.4.0
 azure-mgmt-network==25.3.0
