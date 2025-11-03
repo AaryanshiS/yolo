@@ -143,35 +143,20 @@
 #     context.term()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+import base64
+import logging
 
 import cv2
-import zmq
 import numpy as np
 import torch
-import logging
-import base64
+import zmq
+
 from ultralytics import YOLO
 
 # ----------------------------
 # CONFIG
 # ----------------------------
-ZMQ_ADDRESS = "tcp://*:5555"   # Receiver binds here (from Raspberry Pi)
+ZMQ_ADDRESS = "tcp://*:5555"  # Receiver binds here (from Raspberry Pi)
 DASH_ADDRESS = "tcp://*:5560"  # Dashboard PUB
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"✅ Using device: {device}")
@@ -182,8 +167,8 @@ logging.getLogger("ultralytics").setLevel(logging.CRITICAL)
 model = YOLO(r"C:\Users\DELL\Desktop\ultralytics\best_yolov8s.pt").to(device)
 
 # Optional suspicious class filters
-SUSPICIOUS_CLASS_IDS = []      
-SUSPICIOUS_CLASS_NAMES = []    
+SUSPICIOUS_CLASS_IDS = []
+SUSPICIOUS_CLASS_NAMES = []
 
 # ----------------------------
 # SETUP ZMQ
@@ -204,7 +189,7 @@ alert_count = 0
 # ----------------------------
 try:
     while True:
-        msg = recv_socket.recv()   # Blocking receive
+        msg = recv_socket.recv()  # Blocking receive
 
         # Decode JPEG bytes
         nparr = np.frombuffer(msg, np.uint8)
@@ -215,12 +200,7 @@ try:
         frame_resized = cv2.resize(frame, (640, 360))
 
         # Run YOLO inference
-        results = model.predict(
-            frame_resized,
-            imgsz=320,
-            device=device,
-            verbose=False
-        )
+        results = model.predict(frame_resized, imgsz=320, device=device, verbose=False)
 
         annotated = results[0].plot()
 
@@ -248,13 +228,18 @@ try:
             if any(any(sname.lower() in dname.lower() for sname in SUSPICIOUS_CLASS_NAMES) for dname in detected_names):
                 suspicious_detected = True
         if not suspicious_detected and not SUSPICIOUS_CLASS_IDS and not SUSPICIOUS_CLASS_NAMES:
-            if any(k in dname.lower() for k in ("suspicious", "suspect", "intruder", "fight", "violence") for dname in detected_names):
+            if any(
+                k in dname.lower()
+                for k in ("suspicious", "suspect", "intruder", "fight", "violence")
+                for dname in detected_names
+            ):
                 suspicious_detected = True
 
         if suspicious_detected:
             alert_count += 1
-            cv2.putText(annotated, "ALERT: Suspicious Activity Detected!",
-                        (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
+            cv2.putText(
+                annotated, "ALERT: Suspicious Activity Detected!", (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3
+            )
 
         # --- Send to dashboard ---
         _, jpg_buffer = cv2.imencode(".jpg", annotated)
@@ -264,7 +249,7 @@ try:
 
         # Also show locally
         cv2.imshow("YOLOv8 Detection", annotated)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        if cv2.waitKey(1) & 0xFF == ord("q"):
             break
 
 except KeyboardInterrupt:
@@ -274,5 +259,3 @@ finally:
     recv_socket.close()
     dash_socket.close()
     context.term()
-
-
