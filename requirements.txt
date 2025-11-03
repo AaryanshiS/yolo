@@ -17,7 +17,7 @@ appdirs==1.4.4
 argon2-cffi @ file:///opt/conda/conda-bld/argon2-cffi_1645000214183/work
 argon2-cffi-bindings @ file:///C:/ci_311/argon2-cffi-bindings_1676424443321/work
 arrow @ file:///C:/ci_311/arrow_1678249767083/work
-astroid @ file:///C:/ci_311/astroid_1678740610167/work
+asteroid @ file:///C:/ci_311/astroid_1678740610167/work
 astropy @ file:///C:/ci_311_rebuilds/astropy_1678996071858/work
 asttokens @ file:///opt/conda/conda-bld/asttokens_1646925590279/work
 async-timeout @ file:///C:/ci_311/async-timeout_1676431518331/work
@@ -285,7 +285,7 @@ python-dateutil @ file:///tmp/build/80754af9/python-dateutil_1626374649649/work
 python-dotenv @ file:///C:/ci_311/python-dotenv_1676455170580/work
 python-json-logger @ file:///C:/b/abs_cblnsm6puj/croot/python-json-logger_1683824130469/work
 python-lsp-black @ file:///C:/ci_311/python-lsp-black_1678721855627/work
-python-lsp-jsonrpc==1.0.0
+python-lsp-jsonrpc==1.1.2
 python-lsp-server @ file:///C:/b/abs_catecj7fv1/croot/python-lsp-server_1681930405912/work
 python-slugify @ file:///tmp/build/80754af9/python-slugify_1620405669636/work
 python-snappy @ file:///C:/ci_311/python-snappy_1676446060182/work
